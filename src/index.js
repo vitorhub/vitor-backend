@@ -1,3 +1,4 @@
+// https://github.com/vitorhub/vitor-backend.git
 // joaofalcao33
 // pTPXl0h5G2ycsLLS
 // mongodb+srv://joaofalcao33:<password>@cluster0.m6bx9sk.mongodb.net/?retryWrites=true&w=majority
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 
 const dbUser = process.env.DB_USER;
 const dbPass = process.env.DB_PASS;
+const port = process.env.PORT || 3001
 
 mongoose
   .connect(
@@ -25,7 +27,7 @@ mongoose
   )
   .then(() => {
     console.log("conectamos ao mongo db atlas");
-    app.listen(3001); // entregar uma porta
+    app.listen(port); // entregar uma porta
   })
   .catch((err) => {
     console.log(err);

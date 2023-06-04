@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 
 const UserModel = require("../models/user.models")
 
-// insere dados se for email diferente
+// CREATE usuario no banco se email diferente
 // verifica se senha é igual
 // dificulta a senha com bcrypt
 router.post("/", async (req, res)=>{
@@ -34,7 +34,25 @@ router.post("/", async (req, res)=>{
         return res.status(500).json({msg: "algum erro"})
     }
 })
-// confere se senha modificada por bcrypt esta correta no bd
+// DELETE by email, find id and delete it
+// Compara senha vindo de bcrypt
+router.delete("/deletar", async (req,res)=>{
+    const { email, password } = req.body
+    const userByEmail = await UserModel.findOne({email: email})
+    const checkPassword = await bcrypt.compare(password, userByEmail.password)
+    if(checkPassword){
+        try {
+            await UserModel.deleteOne({_id: userByEmail.id})
+            return res.status(200).json({msg: "deletou"})
+        } catch (error) {
+            return res.status(401).json({msg: "nao deletou"})
+        }
+    }
+})
+
+
+
+// LOGIN confere se senha modificada por bcrypt esta correta no bd
 // confere se usuario existe
 // verificar token para manter usuário logado
 router.post("/auth/login", async (req, res)=>{
