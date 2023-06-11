@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 
 const UserModel = require("../models/user.models");
 
+
+
 // CREATE usuario no banco se email diferente
 // verifica se senha é igual
 // dificulta a senha com bcrypt
@@ -64,14 +66,20 @@ router.patch("/update/:id", async (req, res) => {
 router.delete("/deletar", async (req, res) => {
   const { email, password } = req.body;
   const userByEmail = await UserModel.findOne({ email: email });
-  const checkPassword = await bcrypt.compare(password, userByEmail.password);
-  if (checkPassword) {
-    try {
-      await UserModel.deleteOne({ _id: userByEmail.id });
-      return res.status(200).json({ msg: "deletou" });
-    } catch (error) {
-      return res.status(401).json({ msg: "nao deletou" });
+  if(userByEmail){
+    const checkPassword = await bcrypt.compare(password, userByEmail.password);
+    if (checkPassword ) {
+      try {
+        await UserModel.deleteOne({ _id: userByEmail.id });
+        return res.status(200).json({ msg: "deletou" });
+      } catch (error) {
+        return res.status(401).json({ msg: "nao deletou" });
+      }
+    }else{
+      return res.status(401).json({msg: "linha 78"})
     }
+  }else{
+    return res.status(401).json({msg: "email nao encontrado"})
   }
 });
 
@@ -90,6 +98,7 @@ router.get("/private/:id", checkToken, async (req, res) => {
 function checkToken(req, res, next) {
     // este é um middleware
     const authHeader = req.headers["authorization"]; // PEGA da req.headers indice authorization
+    console.log(authHeader)
     const token = authHeader && authHeader.split(" ")[1];
     if (!token) {
       return res.status(401).json({ msg: "token invalido" });

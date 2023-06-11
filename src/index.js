@@ -5,9 +5,18 @@
 require("dotenv").config(); // para dotenv
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require('cors')  // aki cors
 
 const app = express();
 app.use(express.json());
+
+app.use((req,res,next) =>{
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  // app.use(cors());
+  next();
+})
 
 // rotas da api
 const userRoutes = require("./routes/user.routes")
