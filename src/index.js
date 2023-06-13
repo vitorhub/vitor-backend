@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
 
 const dbUser = process.env.DB_USER;
 const dbPass = process.env.DB_PASS;
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 9001
 
 mongoose
   .connect(
