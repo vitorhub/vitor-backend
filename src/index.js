@@ -1,6 +1,4 @@
 // https://github.com/vitorhub/vitor-backend.git
-// joaofalcao33
-// pTPXl0h5G2ycsLLS
 // mongodb+srv://joaofalcao33:<password>@cluster0.m6bx9sk.mongodb.net/?retryWrites=true&w=majority
 require("dotenv").config(); // para dotenv
 const express = require("express");
